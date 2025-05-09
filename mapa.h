@@ -1,0 +1,25 @@
+#define HEROI '@'
+#define FANTASMA 'F'
+#define VAZIO '.'
+#define PAREDE_VERTICAL '|'
+#define PAREDE_HORIZONTAL '-'
+
+typedef struct {
+    char **matriz;
+    int linhas;
+    int colunas;
+} Mapa;
+
+typedef struct {
+    int x;
+    int y;
+} Posicao;
+
+void alocamapa(Mapa *mapa);
+void lemapa(Mapa *mapa);
+void liberamapa(Mapa *mapa);
+void imprimemapa(Mapa *mapa);
+void encontramapa(Mapa *mapa, Posicao *p, char c);
+int ehvalida(Mapa *mapa, int x, int y);
+int ehvazia(Mapa *mapa, int x, int y);
+void andanomapa(Mapa *mapa, int xorigem, int yorigem, int xdestino, int ydestino);
