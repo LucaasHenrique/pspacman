@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "pacman.h"
 #include "mapa.h"
+#include <time.h>
 
 Mapa mapa;
 Posicao heroi;
@@ -53,16 +54,53 @@ void move(char direcao) {
     heroi.y = proximoy;
 }
 
-void fantasma() {
-    for (int i = 0; i < mapa.linhas; i++) {
-        for (int j = 0; j < mapa.colunas; j++) {
-            if (mapa.matriz[i][j] = FANTASMA) {
-                if(ehvalida(&mapa, i, j+1)) {
-                    andanomapa(&mapa, i, j, i, j+1);
-                }
+int praondefantasmavai(int xatual, int yatual, int *xdestino, int *ydestino) {
+
+    int opcoes[4][2] = {
+        {xatual, yatual+1},
+        {xatual + 1, yatual},
+        {xatual, yatual - 1},
+        {xatual - 1, yatual}
+    };
+
+    srand(time(0));
+
+
+    for (int i = 0; i < 10; i++) {
+        int posicao = rand() % 4;
+
+        if (podeandar(&mapa, opcoes[posicao][0], opcoes[posicao][1])) {
+            *xdestino = opcoes[posicao][0];
+            *ydestino = opcoes[posicao][1];
+            return 1;
+        }
+    }
+
+
+    return 0;
+}
+
+void fantasmas() {
+    Mapa copia;
+
+    copiamapa(&copia, &mapa);
+
+    for (int i = 0; i < copia.linhas; i++) {
+        for (int j = 0; j < copia.colunas; j++) {
+            if (copia.matriz[i][j] = FANTASMA) {
+               int xdestino;
+               int ydestino;
+
+               int encontrou = praondefantasmavai(i, j, &xdestino, &ydestino);
+
+               if (encontrou) {
+                   andanomapa(&mapa, i, j, xdestino, ydestino);
+               }
             }
         }
     }
+
+    liberamapa(&copia);
 }
 
 int main() {
@@ -77,6 +115,7 @@ int main() {
         scanf(" %c", &comando);
 
         move(comando);
+        fantasmas();
 
     } while (!acabou());
 

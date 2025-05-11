@@ -23,3 +23,5 @@ void encontramapa(Mapa *mapa, Posicao *p, char c);
 int ehvalida(Mapa *mapa, int x, int y);
 int ehvazia(Mapa *mapa, int x, int y);
 void andanomapa(Mapa *mapa, int xorigem, int yorigem, int xdestino, int ydestino);
+void copiamapa(Mapa *destino, Mapa *origem);
+int podeandar(Mapa *mapa, int x, int y);

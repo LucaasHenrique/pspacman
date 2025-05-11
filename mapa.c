@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "mapa.h"
 
 void lemapa(Mapa *mapa) {
@@ -72,4 +73,21 @@ void andanomapa(Mapa *mapa, int xorigem, int yorigem, int xdestino, int ydestino
     char personagem = mapa->matriz[xorigem][yorigem];
     mapa->matriz[xdestino][ydestino] = personagem;
     mapa->matriz[xorigem][yorigem] = '.';
+}
+
+void copiamapa(Mapa *origem, Mapa *destino) {
+    destino->linhas = origem->linhas;
+    destino->colunas = origem->colunas;
+
+    alocamapa(destino);
+
+    for (int i = 0; i < origem->linhas; i++) {
+        strcpy(destino->matriz[i], origem->matriz[i]);
+    }
+}
+
+int podeandar(Mapa *mapa, int x, int y) {
+
+    return ehvalida(mapa, x, y) &&
+        ehvazia(mapa, x, y);
 }
