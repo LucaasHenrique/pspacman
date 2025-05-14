@@ -38,22 +38,18 @@ void liberamapa(Mapa *mapa) {
     free(mapa->matriz);
 }
 
-void imprimemapa(Mapa *mapa) {
-    for (int i = 0; i < mapa->linhas; ++i) {
-        printf("%s\n", mapa->matriz[i]);
-    }
-}
-
-void encontramapa(Mapa *mapa, Posicao *p, char c) {
+int encontramapa(Mapa *mapa, Posicao *p, char c) {
     for (int i = 0; i < mapa->linhas; ++i) {
         for (int j = 0; j < mapa->colunas; ++j) {
             if (mapa->matriz[i][j] == c) {
                 p->x = i;
                 p->y = j;
-                return;;
+                return 1;
             }
         }
     }
+
+    return 0;
 }
 
 int ehvalida(Mapa *mapa, int x, int y) {
@@ -63,10 +59,6 @@ int ehvalida(Mapa *mapa, int x, int y) {
         return 0;
 
     return 1;
-}
-
-int ehvazia(Mapa *mapa, int x, int y) {
-    return mapa->matriz[x][y] == '.';
 }
 
 void andanomapa(Mapa *mapa, int xorigem, int yorigem, int xdestino, int ydestino) {
@@ -86,8 +78,17 @@ void copiamapa(Mapa *origem, Mapa *destino) {
     }
 }
 
-int podeandar(Mapa *mapa, int x, int y) {
+int podeandar(Mapa *mapa, char personagem, int x, int y) {
 
     return ehvalida(mapa, x, y) &&
-        ehvazia(mapa, x, y);
+        !ehparede(mapa, x, y) &&
+        !ehpersonagem(mapa, personagem, x, y);
+}
+
+int ehparede(Mapa *mapa, int x, int y) {
+    return mapa->matriz[x][y] == PAREDE_VERTICAL || mapa->matriz[x][y] == PAREDE_HORIZONTAL;
+}
+
+int ehpersonagem(Mapa *mapa, char personagem, int x, int y) {
+    return mapa->matriz[x][y] == personagem;
 }

@@ -3,7 +3,6 @@
 #include "time.h"
 #include "pacman.h"
 #include "mapa.h"
-#include "ui.h"
 
 Mapa mapa;
 Posicao heroi;
@@ -108,7 +107,6 @@ void fantasmas() {
     liberamapa(&copia);
 }
 
-
 void explodepilula() {
 
     if(!tempilula) return;
@@ -122,20 +120,19 @@ void explodepilula() {
 }
 
 void explodepilula2(int x, int y, int somax, int somay, int qtd) {
+    if (qtd == 0) return;
 
-    if(qtd == 0) return;
+    int novox = y+somax;
+    int novoy = y+somay;
 
-    int novox = x + somax;
-    int novoy = y + somay;
 
     if(!ehvalida(&mapa, novox, novoy)) return;
     if(ehparede(&mapa, novox, novoy)) return;
 
-
     mapa.matriz[novox][novoy] = VAZIO;
-    explodepilula2(novox, novoy, somax, somay, qtd - 1);
-
+    explodepilula2(novox, novoy, somax, somay, qtd-1);
 }
+
 
 int main() {
 
